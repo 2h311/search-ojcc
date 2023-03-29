@@ -32,8 +32,7 @@ def get_jcc_html(ojcc_case_no: str) -> Tag:
     return soup.select_one("div#docket")
 
 
-def get_pdf_links(div_docket: Tag) -> set:
-    pdf_link_list = set()
+def get_pdf_links(div_docket: Tag, pdf_links: set = set()) -> set:
     html_table_rows = div_docket.select("tr")
 
     # skip the first html table row
@@ -44,17 +43,36 @@ def get_pdf_links(div_docket: Tag) -> set:
         if proceedings_table_data.text.lower().__contains__(
             search_text
         ) and pdf_table_data.find("a"):
-            pdf_link = (
-                f'{"https://www.jcc.state.fl.us"}{pdf_table_data.find("a").get("href")}'
-            )
-            pdf_link_list.add(pdf_link)
+            pdf_links.add(f'{pdf_table_data.find("a").get("href")}')
 
-    if pdf_link_list:
-        print(pdf_link_list)
-    else:
-        print("No case records found ...")
+    logger.debug(f"Found {len(pdf_links) or 0} case records")
+    return pdf_links
 
 
 div_docket = get_jcc_html(ojcc_case_no)
 if div_docket:
-    reuslt = get_pdf_links(div_docket)
+    pdf_links = get_pdf_links(div_docket)
+
+pdf_link = pdf_links.pop()
+
+request_url = f"https://www.jcc.state.fl.us{pdf_link}"
+logger.debug(f"Downloading pdf -> {pdf_link}")
+# download pdf
+response = requests.get(request_url, stream=True)
+response.raise_for_status()
+logger.debug("Download Successful. Reading content of PDF file")
+
+
+import io
+from pdfminer.high_level import extract_text
+from pdfminer.high_level import extract_pages
+
+text = extract_text(io.BytesIO(response.content))
+case_number = re.search("OJCC Case No.: (\S+)", text).groups()[0]
+print("Case Number:", case_number)
+
+telephone = re.search("\d{3}-\d{3}-\d{4}", text)
+email = re.search("([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+", text)
+# adjuster_name = ...
+#
+# text[:telephone.span()[0]]
