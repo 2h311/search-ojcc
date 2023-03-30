@@ -81,4 +81,5 @@ logger.info(f"Email: {email}")
 medical_benefits_case = re.search("MEDICAL BENEFITS CASE:\s+(\S+)", text).groups()[0]
 logger.info(f"MEDICAL BENEFITS CASE: {medical_benefits_case}")
 
-re.search("LOST TIME CASE:\s*", text)
+lost_time_case = re.search("LOST TIME CASE:\s+(No|Yes)", text).groups()[0]
+logger.info(f"LOST TIME CASE: {lost_time_case}")
