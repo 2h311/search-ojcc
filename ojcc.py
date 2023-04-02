@@ -1,12 +1,12 @@
 import re
 import io
 import logging
+import functools
 
 import requests
-from bs4.element import Tag as BeautifulSoupTag
 from bs4 import BeautifulSoup
+from bs4.element import Tag as BeautifulSoupTag
 from pdfminer.high_level import extract_text
-from pdfminer.high_level import extract_pages
 
 
 logging.basicConfig(format="- %(message)s")
@@ -14,6 +14,24 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
+def retry_wraps(times=3):
+    def retry(function):
+        """tries to run a function after an unsuccessful attempt."""
+
+        @functools.wraps(function)
+        def inner(*args, **kwargs):
+            for _ in range(times):
+                try:
+                    return function(*args, **kwargs)
+                except Exception as err:
+                    logger.error(err)
+
+        return inner
+
+    return retry
+
+
+@retry_wraps()
 def get_jcc_html(ojcc_case_no: str) -> BeautifulSoupTag:
     request_url = "https://www.jcc.state.fl.us/JCC/searchJCC/searchAction.asp?sT=byCase"
     logger.debug(f"Searching ojcc case number {ojcc_case_no} at {request_url}")
@@ -26,7 +44,7 @@ def get_jcc_html(ojcc_case_no: str) -> BeautifulSoupTag:
     return soup.select_one("div#docket")
 
 
-def get_pdf_links(div_docket: BeautifulSoupTag, pdf_links: set = set()) -> set:
+def get_pdf_links(div_docket: BeautifulSoupTag, pdf_links: set[str] = set()) -> set:
     html_table_rows = div_docket.select("tr")
 
     # skip the first html table row
@@ -43,29 +61,37 @@ def get_pdf_links(div_docket: BeautifulSoupTag, pdf_links: set = set()) -> set:
     return pdf_links
 
 
-def parse_and_extract_pdf_file(text: str):
+def parse_and_extract_pdf_file(data_dict: dict[str], text: str):
     case_number = re.search("OJCC Case No.: (\S+)", text).groups()[0]
     logger.info(f"Case Number: {case_number}")
+    data_dict["caseNumber"] = case_number
 
     telephone = re.search("\d{3}-\d{3}-\d{4}", text).group()
     logger.info(f"Telephone: {telephone}")
+    data_dict["telephone"] = telephone
 
     email = re.search(
-        "([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+", text
+        "([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\s)?[A-Z|a-z]{2,})+", text
     ).group()
+    email = re.sub(
+        "\s", "", email.lower()
+    )  # remove any whitespace contained in the email, if any
     logger.info(f"Email: {email}")
+    data_dict["email"] = email
 
-    medical_benefits_case = re.search("MEDICAL BENEFITS CASE:\s+(\S+)", text).groups()[
-        0
-    ]
-    logger.info(f"MEDICAL BENEFITS CASE: {medical_benefits_case}")
+    medical_benefits_case = re.search("MEDICAL BENEFITS CASE:\s+(\S+)", text)
+    medical_benefits_case = medical_benefits_case.groups()[0]
+    logger.info(f"Medical Benefits Case: {medical_benefits_case}")
+    data_dict["medicalBenefitsCase"] = medical_benefits_case
 
     lost_time_case = re.search("LOST TIME CASE:\s+(No|Yes)", text).groups()[0]
-    logger.info(f"LOST TIME CASE: {lost_time_case}")
+    logger.info(f"Lost Time Case: {lost_time_case}")
+    data_dict["lostTimeCase"] = lost_time_case
     print()
 
 
-def get_pdf_content(pdf_link: str):
+@retry_wraps()
+def get_pdf_content(pdf_link: str) -> bytes:
     request_url = f"https://www.jcc.state.fl.us{pdf_link}"
     logger.debug(f"Downloading pdf from {pdf_link}")
     # download pdf
@@ -75,19 +101,27 @@ def get_pdf_content(pdf_link: str):
     return response.content
 
 
+def get_all_data_from_case_no(ojcc_case_no: str) -> list[dict[str] | None]:
+    all_data_list = list()
+    div_docket = get_jcc_html(ojcc_case_no)
+
+    if div_docket:
+        pdf_links = get_pdf_links(div_docket)
+        while pdf_links:
+            data_dict = dict()
+            pdf_link = pdf_links.pop()
+            data_dict["pdfLink"] = pdf_link
+            pdf_content_in_bytes = get_pdf_content(pdf_link)
+            text = extract_text(io.BytesIO(pdf_content_in_bytes))
+            parse_and_extract_pdf_file(data_dict, text)
+            all_data_list.append(data_dict)
+
+    if not all_data_list:
+        logger.error(
+            f"Can't find any case file in the ojcc case number you've provided {ojcc_case_no}"
+        )
+    return all_data_list
+
+
 proceedings_search_text = "response to petition for benefits filed by"
-ojcc_case_no = "17-000007"
-
-div_docket = get_jcc_html(ojcc_case_no)
-if div_docket:
-    pdf_links = get_pdf_links(div_docket)
-
-    while pdf_links:
-        pdf_link = pdf_links.pop()
-        pdf_content_in_bytes = get_pdf_content(pdf_link)
-        text = extract_text(io.BytesIO(pdf_content_in_bytes))
-        parse_and_extract_pdf_file(text)
-else:
-    logger.error(
-        f"Can't find any case file in the ojcc case number you've provided {ojcc_case_no}"
-    )
+get_all_data_from_case_no("17-000015")
