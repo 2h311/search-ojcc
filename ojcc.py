@@ -1,7 +1,7 @@
-import re
+import functools
 import io
 import logging
-import functools
+import re
 
 import requests
 from bs4 import BeautifulSoup
@@ -62,29 +62,29 @@ def get_pdf_links(div_docket: BeautifulSoupTag, pdf_links: set[str] = set()) -> 
 
 
 def parse_and_extract_pdf_file(data_dict: dict[str], text: str):
-    case_number = re.search("OJCC Case No.: (\S+)", text).groups()[0]
+    case_number = re.search(r"OJCC Case No.: (\S+)", text).groups()[0]
     logger.info(f"Case Number: {case_number}")
     data_dict["caseNumber"] = case_number
 
-    telephone = re.search("\d{3}-\d{3}-\d{4}", text).group()
+    telephone = re.search(r"\d{3}-\d{3}-\d{4}", text).group()
     logger.info(f"Telephone: {telephone}")
     data_dict["telephone"] = telephone
 
     email = re.search(
-        "([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\s)?[A-Z|a-z]{2,})+", text
+        r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\\s)?[A-Z|a-z]{2,})+", text
     ).group()
     email = re.sub(
-        "\s", "", email.lower()
+        "\\s", "", email.lower()
     )  # remove any whitespace contained in the email, if any
     logger.info(f"Email: {email}")
     data_dict["email"] = email
 
-    medical_benefits_case = re.search("MEDICAL BENEFITS CASE:\s+(\S+)", text)
+    medical_benefits_case = re.search(r"MEDICAL BENEFITS CASE:\s+(\S+)", text)
     medical_benefits_case = medical_benefits_case.groups()[0]
     logger.info(f"Medical Benefits Case: {medical_benefits_case}")
     data_dict["medicalBenefitsCase"] = medical_benefits_case
 
-    lost_time_case = re.search("LOST TIME CASE:\s+(No|Yes)", text).groups()[0]
+    lost_time_case = re.search(r"LOST TIME CASE:\s+(No|Yes)", text).groups()[0]
     logger.info(f"Lost Time Case: {lost_time_case}")
     data_dict["lostTimeCase"] = lost_time_case
     print()
