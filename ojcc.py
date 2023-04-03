@@ -12,6 +12,7 @@ from pdfminer.high_level import extract_text
 logging.basicConfig(format="- %(message)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+proceedings_search_text = "response to petition for benefits filed by"
 
 
 def retry_wraps(times=3):
@@ -123,5 +124,5 @@ def get_all_data_from_case_no(ojcc_case_no: str) -> list[dict[str] | None]:
     return all_data_list
 
 
-proceedings_search_text = "response to petition for benefits filed by"
-get_all_data_from_case_no("17-000015")
+if __name__ == "__main__":
+    get_all_data_from_case_no("17-000015")
