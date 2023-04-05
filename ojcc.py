@@ -10,7 +10,7 @@ from bs4.element import Tag as BeautifulSoupTag
 from pdfminer.high_level import extract_text
 
 
-logging.basicConfig(format="-- %(message)s")
+logging.basicConfig(format="... %(message)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 proceedings_search_text = "response to petition for benefits filed by"
