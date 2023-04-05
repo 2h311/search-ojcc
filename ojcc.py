@@ -2,6 +2,7 @@ import functools
 import io
 import logging
 import re
+from typing import Callable
 
 import requests
 from bs4 import BeautifulSoup
@@ -9,14 +10,14 @@ from bs4.element import Tag as BeautifulSoupTag
 from pdfminer.high_level import extract_text
 
 
-logging.basicConfig(format="- %(message)s")
+logging.basicConfig(format="-- %(message)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 proceedings_search_text = "response to petition for benefits filed by"
 
 
-def retry_wraps(times=3):
-    def retry(function):
+def retry_wraps(times: int = 3) -> Callable:
+    def retry(function) -> Callable:
         """tries to run a function after an unsuccessful attempt."""
 
         @functools.wraps(function)
@@ -62,7 +63,7 @@ def get_pdf_links(div_docket: BeautifulSoupTag, pdf_links: set[str] = set()) -> 
     return pdf_links
 
 
-def parse_and_extract_pdf_file(data_dict: dict[str], text: str):
+def parse_and_extract_pdf_file(data_dict: dict[str], text: str) -> None:
     case_number = re.search(r"OJCC Case No.: (\S+)", text).groups()[0]
     logger.info(f"Case Number: {case_number}")
     data_dict["caseNumber"] = case_number
