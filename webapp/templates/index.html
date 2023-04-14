@@ -12,7 +12,7 @@
   <body>
     <h1>JCC Bot</h1>
 
-    <select name="caseStatus" id="">
+    <select name="caseStatus" class="js-case-status">
       <option>CASE STATUS</option>
       <option value="all">ALL</option>
       <option value="active">ACTIVE</option>
@@ -22,6 +22,8 @@
     <input type="text" name="date1" id="" placeholder="17-00000">
     <input type="text" name="date2" id="" placeholder="17-00005">
     <button>Search Result</button>
+
+    <script src="{{ url_for('static', path='js/script.js') }}"></script>
   </body>
 
 </html>
