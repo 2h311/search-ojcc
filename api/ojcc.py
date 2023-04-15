@@ -14,6 +14,7 @@ logging.basicConfig(format="... %(message)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 proceedings_search_text = "response to petition for benefits filed by"
+email_regex = r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\s)*[A-Z|a-z]{2,})+"
 
 
 class OjccCaseData:
@@ -81,9 +82,7 @@ def parse_and_extract_pdf_file(data_dict: dict[str], text: str) -> None:
     logger.info(f"Telephone: {telephone}")
     data_dict["telephone"] = telephone
 
-    email = re.search(
-        r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\\s)?[A-Z|a-z]{2,})+", text
-    ).group()
+    email = re.search(email_regex, text, re.M | re.I).group()
     email = re.sub(
         "\\s", "", email.lower()
     )  # remove any whitespace contained in the email, if any
@@ -134,10 +133,15 @@ def get_all_data_from_case_no(ojcc_case_no: str) -> list[OjccCaseData | None]:
     return all_data_list
 
 
-# def get_data_for_multiple_case_numbers(case_number_list: list):
-#     for string in case_number_list:
-#         print(string)
+def get_data_for_multiple_case_numbers(case_number_list: list):
+    pipeline = dict()
+    for string in case_number_list:
+        returned_data = get_all_data_from_case_no(string)
+        if returned_data:
+            pipeline[string] = returned_data
+    return pipeline
 
 
-if __name__ == "__main__":
-    get_all_data_from_case_no("17-000023")
+r = get_data_for_multiple_case_numbers(
+    ["17-00005", "17-00008", "17-00010", "17-00011", "17-00016", "17-00026"]
+)
