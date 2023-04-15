@@ -16,6 +16,15 @@ logger.setLevel(logging.DEBUG)
 proceedings_search_text = "response to petition for benefits filed by"
 
 
+class OjccCaseData:
+    pdfLink: str
+    ojccCaseNo: str
+    telephone: str
+    email: str
+    medicalBenefitsCase: str
+    lostTimeCase: str
+
+
 def retry_wraps(times: int = 3) -> Callable:
     def retry(function) -> Callable:
         """tries to run a function after an unsuccessful attempt."""
@@ -103,7 +112,7 @@ def get_pdf_content(pdf_link: str) -> bytes:
     return response.content
 
 
-def get_all_data_from_case_no(ojcc_case_no: str) -> list[dict[str] | None]:
+def get_all_data_from_case_no(ojcc_case_no: str) -> list[OjccCaseData | None]:
     all_data_list = list()
     div_docket = get_jcc_html(ojcc_case_no)
 
@@ -123,6 +132,11 @@ def get_all_data_from_case_no(ojcc_case_no: str) -> list[dict[str] | None]:
             f"Can't find any case file in the ojcc case number you've provided {ojcc_case_no}"
         )
     return all_data_list
+
+
+# def get_data_for_multiple_case_numbers(case_number_list: list):
+#     for string in case_number_list:
+#         print(string)
 
 
 if __name__ == "__main__":
