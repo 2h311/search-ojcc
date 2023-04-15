@@ -17,3 +17,8 @@ body {
   font-family: "Inter", sans-serif;
   max-height: 100vh;
 }
+
+.btn,
+input[type="text"] {
+  font-family: "Inter", sans-serif;
+}

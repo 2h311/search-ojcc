@@ -126,4 +126,4 @@ def get_all_data_from_case_no(ojcc_case_no: str) -> list[dict[str] | None]:
 
 
 if __name__ == "__main__":
-    get_all_data_from_case_no("17-000015")
+    get_all_data_from_case_no("17-000023")
