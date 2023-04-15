@@ -7,6 +7,8 @@ from typing import Callable
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import Tag as BeautifulSoupTag
+from models import DataToBeReturned
+from models import OjccCaseData
 from pdfminer.high_level import extract_text
 
 
@@ -15,15 +17,6 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 proceedings_search_text = "response to petition for benefits filed by"
 email_regex = r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\s)*[A-Z|a-z]{2,})+"
-
-
-class OjccCaseData:
-    pdfLink: str
-    ojccCaseNo: str
-    telephone: str
-    email: str
-    medicalBenefitsCase: str
-    lostTimeCase: str
 
 
 def retry_wraps(times: int = 3) -> Callable:
@@ -133,15 +126,24 @@ def get_all_data_from_case_no(ojcc_case_no: str) -> list[OjccCaseData | None]:
     return all_data_list
 
 
-def get_data_for_multiple_case_numbers(case_number_list: list):
-    pipeline = dict()
+def get_data_for_multiple_case_numbers(
+    case_number_list: list,
+) -> DataToBeReturned | None:
     for string in case_number_list:
+        pipeline = dict()
         returned_data = get_all_data_from_case_no(string)
+        pipeline["userInputtedCaseNumber"] = string
         if returned_data:
-            pipeline[string] = returned_data
-    return pipeline
+            pipeline["cases"] = returned_data
+        yield pipeline
+    # TODO: add a flag that will signify to the FE to stop probing...
 
 
-r = get_data_for_multiple_case_numbers(
-    ["17-00005", "17-00008", "17-00010", "17-00011", "17-00016", "17-00026"]
-)
+if __name__ == "__main__":
+    for r in get_data_for_multiple_case_numbers(
+        [
+            "17-00022",
+            "17-00012",
+        ]
+    ):
+        print(r)
