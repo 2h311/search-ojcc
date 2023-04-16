@@ -13,3 +13,8 @@ class OjccCaseData(BaseModel):
 class DataToBeReturned(BaseModel):
     userInputtedCaseNumber: str
     cases: list[OjccCaseData | None]
+
+
+class CasePayload(BaseModel):
+    caseStatus: str
+    caseNumbers: list[str]
