@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class OjccCaseData(BaseModel):
     pdfLink: str
-    ojccCaseNo: str
+    caseNumber: str
     telephone: str
     email: str
     medicalBenefitsCase: str

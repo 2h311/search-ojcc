@@ -96,10 +96,9 @@ def parse_and_extract_pdf_file(data_dict: dict[str], text: str) -> None:
 
 @retry_wraps()
 def get_pdf_content(pdf_link: str) -> bytes:
-    request_url = f"https://www.jcc.state.fl.us{pdf_link}"
     logger.debug(f"Downloading pdf from {pdf_link}")
     # download pdf
-    response = requests.get(request_url, stream=True, timeout=45)
+    response = requests.get(pdf_link, stream=True, timeout=45)
     response.raise_for_status()
     logger.debug("Download Successful. Reading and Parsing content of .pdf file")
     return response.content
@@ -114,6 +113,7 @@ def get_all_data_from_case_no(ojcc_case_no: str) -> list[OjccCaseData | None]:
         while pdf_links:
             data_dict = dict()
             pdf_link = pdf_links.pop()
+            pdf_link = f"https://www.jcc.state.fl.us{pdf_link}"
             data_dict["pdfLink"] = pdf_link
             pdf_content_in_bytes = get_pdf_content(pdf_link)
             text = extract_text(io.BytesIO(pdf_content_in_bytes))
@@ -134,10 +134,8 @@ def get_data_for_multiple_case_numbers(
         pipeline = dict()
         returned_data = get_all_data_from_case_no(string)
         pipeline["userInputtedCaseNumber"] = string
-        if returned_data:
-            pipeline["cases"] = returned_data
+        pipeline["cases"] = returned_data
         yield pipeline
-    # TODO: add a flag that will signify to the FE to stop probing...
 
 
 if __name__ == "__main__":
