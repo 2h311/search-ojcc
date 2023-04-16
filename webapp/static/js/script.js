@@ -23,9 +23,7 @@ async function get_data_from_api(caseNumbers, caseStatusText) {
       caseNumbers: caseNumbers,
     }),
   });
-  // TODO: display a loading spinner
-  json = await response.json();
-  console.log(json);
+  return await response.json();
 }
 
 searchButton.addEventListener("click", async function () {
@@ -40,6 +38,15 @@ searchButton.addEventListener("click", async function () {
   }
 
   let caseStatusText = caseStatusElement.selectedOptions[0].text;
+  // TODO: display a loading spinner
+
   // make request to backend
-  await get_data_from_api(caseNumbers, caseStatusText);
+  const data = await get_data_from_api(caseNumbers, caseStatusText);
+
+  for (const item of data) {
+    const caseNumber = item.userInputtedCaseNumber;
+    console.log(caseNumber);
+    const cases = item.cases;
+    console.log(cases);
+  }
 });
