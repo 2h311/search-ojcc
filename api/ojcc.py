@@ -13,7 +13,7 @@ from .models import DataToBeReturned
 from .models import OjccCaseData
 
 
-logging.basicConfig(format="... %(message)s")
+logging.basicConfig(format=".. %(message)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 proceedings_search_text = "response to petition for benefits filed by"
