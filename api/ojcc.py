@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 proceedings_search_text = "response to petition for benefits filed by"
 email_regex = (
-    r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\s)*[A-Z|a-z(\s)+]{2,})+"
+    r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-(\s)*]+(\.(\s)*[A-Z|a-z(\s)*]{2,})+"
 )
 
 
@@ -73,7 +73,13 @@ def parse_and_extract_pdf_file(data_dict: dict[str], text: str) -> None:
     logger.info(f"Case Number: {case_number}")
     data_dict["caseNumber"] = case_number
 
-    telephone = re.search(r"\d{3}(-)?\d{3}(-)?\d{4}", text).group()
+    telephone = ""
+    telephone_regex_result1 = re.search(r"\d{3}-\d{3}-\d{4}", text)
+    telephone_regex_result2 = re.search(r"\d{3}(-)?\d{3}(-)?\d{4}", text)
+
+    if telephone_regex_result1 or telephone_regex_result2:
+        telephone = telephone_regex_result1.group() or telephone_regex_result2.group()
+
     logger.info(f"Telephone: {telephone}")
     data_dict["telephone"] = telephone
 
@@ -142,17 +148,18 @@ def get_data_for_multiple_case_numbers(
 if __name__ == "__main__":
     for r in get_data_for_multiple_case_numbers(
         [
-            "17-00010",
-            "17-00011",
-            "17-00013",
-            "17-00014",
-            "17-00015",
-            "17-00016",
-            "17-00018",
-            "17-00030",
-            "17-00032",
-            "17-00035",
-            "17-00038",
+            "10-10029",
+            "18-00012",
+            "17-00001",
+            "17-00003",
+            "16-00014",
+            "12-00015",
+            "16-00016",
+            "15-00018",
+            "20-00030",
+            "21-00032",
+            "22-00035",
+            "11-00038",
         ]
     ):
-        print(r)
+        pass
