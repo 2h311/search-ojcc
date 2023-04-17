@@ -7,17 +7,18 @@ from typing import Callable
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import Tag as BeautifulSoupTag
+from models import DataToBeReturned
+from models import OjccCaseData
 from pdfminer.high_level import extract_text
-
-from .models import DataToBeReturned
-from .models import OjccCaseData
 
 
 logging.basicConfig(format=".. %(message)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 proceedings_search_text = "response to petition for benefits filed by"
-email_regex = r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\s)*[A-Z|a-z]{2,})+"
+email_regex = (
+    r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.(\s)*[A-Z|a-z(\s)+]{2,})+"
+)
 
 
 def retry_wraps(times: int = 3) -> Callable:
@@ -72,14 +73,14 @@ def parse_and_extract_pdf_file(data_dict: dict[str], text: str) -> None:
     logger.info(f"Case Number: {case_number}")
     data_dict["caseNumber"] = case_number
 
-    telephone = re.search(r"\d{3}-\d{3}-\d{4}", text).group()
+    telephone = re.search(r"\d{3}(-)?\d{3}(-)?\d{4}", text).group()
     logger.info(f"Telephone: {telephone}")
     data_dict["telephone"] = telephone
 
-    email = re.search(email_regex, text, re.M | re.I).group()
-    email = re.sub(
-        "\\s", "", email.lower()
-    )  # remove any whitespace contained in the email, if any
+    email = ""
+    regex_result = re.search(email_regex, text, re.M | re.I)
+    if regex_result:
+        email = regex_result.group().replace("\n", "", 1).split("\n")[0].lower()
     logger.info(f"Email: {email}")
     data_dict["email"] = email
 
@@ -141,8 +142,17 @@ def get_data_for_multiple_case_numbers(
 if __name__ == "__main__":
     for r in get_data_for_multiple_case_numbers(
         [
-            "17-00022",
-            "17-00012",
+            "17-00010",
+            "17-00011",
+            "17-00013",
+            "17-00014",
+            "17-00015",
+            "17-00016",
+            "17-00018",
+            "17-00030",
+            "17-00032",
+            "17-00035",
+            "17-00038",
         ]
     ):
         print(r)
