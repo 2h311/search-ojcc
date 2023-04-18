@@ -73,17 +73,18 @@ def parse_and_extract_pdf_file(data_dict: dict[str], text: str) -> None:
     logger.info(f"Case Number: {case_number}")
     data_dict["caseNumber"] = case_number
 
-    telephone = ""
+    telephone = "Not Found"
     telephone_regex_result1 = re.search(r"\d{3}-\d{3}-\d{4}", text)
     telephone_regex_result2 = re.search(r"\d{3}(-)?\d{3}(-)?\d{4}", text)
 
-    if telephone_regex_result1 or telephone_regex_result2:
-        telephone = telephone_regex_result1.group() or telephone_regex_result2.group()
-
+    if telephone_regex_result1:
+        telephone = telephone_regex_result1.group()
+    elif telephone_regex_result2:
+        telephone = telephone_regex_result2.group()
     logger.info(f"Telephone: {telephone}")
     data_dict["telephone"] = telephone
 
-    email = ""
+    email = "Not Found"
     regex_result = re.search(email_regex, text, re.M | re.I)
     if regex_result:
         email = regex_result.group().replace("\n", "", 1).split("\n")[0].lower()
@@ -148,18 +149,9 @@ def get_data_for_multiple_case_numbers(
 if __name__ == "__main__":
     for r in get_data_for_multiple_case_numbers(
         [
-            "10-10029",
-            "18-00012",
-            "17-00001",
-            "17-00003",
-            "16-00014",
-            "12-00015",
-            "16-00016",
-            "15-00018",
-            "20-00030",
-            "21-00032",
-            "22-00035",
-            "11-00038",
+            "20-00007",
+            "13-00012",
+            "18-00043",
         ]
     ):
         pass
