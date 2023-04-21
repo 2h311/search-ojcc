@@ -7,9 +7,10 @@ from typing import Callable
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import Tag as BeautifulSoupTag
-from models import DataToBeReturned
-from models import OjccCaseData
 from pdfminer.high_level import extract_text
+
+from .models import DataToBeReturned
+from .models import OjccCaseData
 
 
 logging.basicConfig(format=".. %(message)s")
