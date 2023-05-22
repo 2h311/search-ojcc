@@ -20,3 +20,5 @@ https://docs.google.com/document/d/1_v5tlvzUtrVfi4G31380lLHkl5jXct_n/edit
 # TODO: I can extend this to download the PDF file into a cloud storage platform
 # like Google Drive for example
 # TODO: Verify the case status sent from FE
+
+# TODO: Comma-separated ojcc case number

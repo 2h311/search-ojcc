@@ -10,7 +10,8 @@
   </head>
 
   <body>
-    <h1>JCC Bot</h1>
+
+    <h1 class="">JCC Bot</h1>
 
     <select name="caseStatus" class="js-case-status">
       <option>CASE STATUS</option>
@@ -23,7 +24,8 @@
     <input type="text" name="date2" class="js-case-no-2" id="" placeholder="17-00005">
     <button class="btn js-search-button">Search Result</button>
 
-    <div class="results js-table-results">loading...</div>
+    <div class="loading-animation js-loading-animation"></div>
+    <div class="results js-table-results"></div>
 
     <script src="{{ url_for('static', path='js/script.js') }}"></script>
   </body>

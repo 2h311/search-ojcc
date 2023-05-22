@@ -1,6 +1,7 @@
 const searchButton = document.querySelector(".js-search-button");
 const caseStatusElement = document.querySelector(".js-case-status");
 const tableResultsDiv = document.querySelector(".js-table-results");
+const loadingAnimationDiv = document.querySelector(".js-loading-animation");
 
 function getCaseNumbers() {
   const caseNumbers = new Array();
@@ -53,18 +54,25 @@ searchButton.addEventListener("click", async function () {
   }
 
   const caseNumbers = getCaseNumbers();
+  console.log(caseNumbers);
   if (!caseNumbers.length) {
     console.log("You need to enter one or two case numbers...");
     return;
   }
 
   let caseStatusText = caseStatusElement.selectedOptions[0].text;
-  // TODO: display a loading spinner
+
+  // clear any existing table if any
+  tableResultsDiv.innerHTML = "";
+  // display a bouncing ball
+  loadingAnimationDiv.innerHTML = `<img src="static/ball-animation.svg" alt="Loading Animation" class="loading-animation--ball">`;
 
   // make request to backend
   const data = await getDataFromApi(caseNumbers, caseStatusText);
+  console.log(data);
 
   for (const item of data) {
+    console.log(item);
     const { userInputtedCaseNumber, cases } = item;
     let table = `<table>
       <caption>${userInputtedCaseNumber}</caption>
@@ -80,6 +88,9 @@ searchButton.addEventListener("click", async function () {
       </thead>
       ${getTableBody(cases)}
     </table>`;
-    tableResultsDiv.innerHTML = table;
+    tableResultsDiv.innerHTML += table;
   }
+
+  // take out the bouncing ball
+  loadingAnimationDiv.innerHTML = "";
 });
