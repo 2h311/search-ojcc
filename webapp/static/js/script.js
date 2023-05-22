@@ -1,5 +1,6 @@
 const searchButton = document.querySelector(".js-search-button");
 const caseStatusElement = document.querySelector(".js-case-status");
+const tableResults = document.querySelector(".js-table-results");
 
 function getCaseNumbers() {
   const caseNumbers = new Array();
@@ -43,19 +44,19 @@ searchButton.addEventListener("click", async function () {
   // make request to backend
   const data = await get_data_from_api(caseNumbers, caseStatusText);
 
-  const tableRow = document.createElement("tr");
-  tableRow.innerHTML = `
-    <thead>
-      <tr>
-        <th>Case &num;</th>
-        <th>Telephone</th>
-        <th>Email</th>
-        <th>Medical Benefits Case</th>
-        <th>Lost Time Case</th>
-        <th>PDF Link</th>
-      </tr>
-    </thead>
-  `;
+  // const tableRow = document.createElement("tr");
+  // tableRow.innerHTML = `
+  //   <thead>
+  //     <tr>
+  //       <th>Case &num;</th>
+  //       <th>Telephone</th>
+  //       <th>Email</th>
+  //       <th>Medical Benefits Case</th>
+  //       <th>Lost Time Case</th>
+  //       <th>PDF Link</th>
+  //     </tr>
+  //   </thead>
+  // `;
 
   for (const item of data) {
     const table = document.createElement("table");
@@ -64,19 +65,27 @@ searchButton.addEventListener("click", async function () {
     const caption = document.createElement("caption");
     caption.innerText = caseNumber;
     table.appendChild(caption);
-    table.appendChild(tableRow);
-    console.log(table);
+    // table.appendChild(tableRow);
+    // console.log(table);
 
     const cases = item.cases;
     console.log(cases);
+    let tableRow = document.createElement("tr");  // helloworld
     item.cases.forEach((value, index, array) =>{
-      let caseNumber = value["caseNumber"];
-      let email = value.email;
-      let lostTimeCase = value.lostTimeCase;
-      let medicalBenefitsCase = value.medicalBenefitsCase;
-      let pdfLink = value.pdfLink;
-      let telephone = value.telephone;
-      console.log(email);
+      console.log(value);
+      tableRow.innerHTML += `
+        <td>${value.caseNumber}</td>
+        <td>${value.telephone}</td>
+        <td>${value.email}</td>
+        <td>${value.medicalBenefitsCase}</td>
+        <td>${value.lostTimeCase}</td>
+        <td>
+          <a href=${value.pdfLink}>${value.pdfLink}</a>
+        </td>
+      `;
+      table.appendChild(tableRow);
     });
+    console.log(tableRow);
+    tableResults.appendChild(table);
   }
 });
