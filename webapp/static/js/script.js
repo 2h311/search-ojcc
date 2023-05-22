@@ -1,6 +1,6 @@
 const searchButton = document.querySelector(".js-search-button");
 const caseStatusElement = document.querySelector(".js-case-status");
-const tableResults = document.querySelector(".js-table-results");
+const tableResultsDiv = document.querySelector(".js-table-results");
 
 function getCaseNumbers() {
   const caseNumbers = new Array();
@@ -15,7 +15,27 @@ function getCaseNumbers() {
   return caseNumbers;
 }
 
-async function get_data_from_api(caseNumbers, caseStatusText) {
+function getTableBody(cases) {
+  let tbodyElement = "<tbody>";
+  cases.forEach((value, index, array) => {
+    tbodyElement += `
+      <tr>
+        <td>${value.caseNumber}</td>
+        <td>${value.telephone}</td>
+        <td>${value.email}</td>
+        <td>${value.medicalBenefitsCase}</td>
+        <td>${value.lostTimeCase}</td>
+        <td>
+          <a href=${value.pdfLink}>${value.pdfLink}</a>
+        </td>
+      </tr>
+    `;
+  });
+  tbodyElement += "</tbody>";
+  return tbodyElement;
+}
+
+async function getDataFromApi(caseNumbers, caseStatusText) {
   const response = await fetch("/api", {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
@@ -42,50 +62,24 @@ searchButton.addEventListener("click", async function () {
   // TODO: display a loading spinner
 
   // make request to backend
-  const data = await get_data_from_api(caseNumbers, caseStatusText);
-
-  // const tableRow = document.createElement("tr");
-  // tableRow.innerHTML = `
-  //   <thead>
-  //     <tr>
-  //       <th>Case &num;</th>
-  //       <th>Telephone</th>
-  //       <th>Email</th>
-  //       <th>Medical Benefits Case</th>
-  //       <th>Lost Time Case</th>
-  //       <th>PDF Link</th>
-  //     </tr>
-  //   </thead>
-  // `;
+  const data = await getDataFromApi(caseNumbers, caseStatusText);
 
   for (const item of data) {
-    const table = document.createElement("table");
-    const caseNumber = item.userInputtedCaseNumber;
-    console.log(caseNumber);
-    const caption = document.createElement("caption");
-    caption.innerText = caseNumber;
-    table.appendChild(caption);
-    // table.appendChild(tableRow);
-    // console.log(table);
-
-    const cases = item.cases;
-    console.log(cases);
-    let tableRow = document.createElement("tr");  // helloworld
-    item.cases.forEach((value, index, array) =>{
-      console.log(value);
-      tableRow.innerHTML += `
-        <td>${value.caseNumber}</td>
-        <td>${value.telephone}</td>
-        <td>${value.email}</td>
-        <td>${value.medicalBenefitsCase}</td>
-        <td>${value.lostTimeCase}</td>
-        <td>
-          <a href=${value.pdfLink}>${value.pdfLink}</a>
-        </td>
-      `;
-      table.appendChild(tableRow);
-    });
-    console.log(tableRow);
-    tableResults.appendChild(table);
+    const { userInputtedCaseNumber, cases } = item;
+    let table = `<table>
+      <caption>${userInputtedCaseNumber}</caption>
+      <thead>
+        <tr>
+          <th>Case &num;</th>
+          <th>Telephone</th>
+          <th>Email</th>
+          <th>Medical Benefits Case</th>
+          <th>Lost Time Case</th>
+          <th>PDF Link</th>
+        </tr>
+      </thead>
+      ${getTableBody(cases)}
+    </table>`;
+    tableResultsDiv.innerHTML = table;
   }
 });
