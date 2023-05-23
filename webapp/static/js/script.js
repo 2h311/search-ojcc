@@ -54,7 +54,6 @@ searchButton.addEventListener("click", async function () {
   }
 
   const caseNumbers = getCaseNumbers();
-  console.log(caseNumbers);
   if (!caseNumbers.length) {
     console.log("You need to enter one or two case numbers...");
     return;
@@ -69,28 +68,32 @@ searchButton.addEventListener("click", async function () {
 
   // make request to backend
   const data = await getDataFromApi(caseNumbers, caseStatusText);
-  console.log(data);
 
   for (const item of data) {
     console.log(item);
     const { userInputtedCaseNumber, cases } = item;
-    let table = `<table>
-      <caption>${userInputtedCaseNumber}</caption>
-      <thead>
-        <tr>
-          <th>Case &num;</th>
-          <th>Telephone</th>
-          <th>Email</th>
-          <th>Medical Benefits Case</th>
-          <th>Lost Time Case</th>
-          <th>PDF Link</th>
-        </tr>
-      </thead>
-      ${getTableBody(cases)}
-    </table>`;
+    console.log(cases);
+
+    let table;
+    if (cases.length === 0) {
+      table = "<div>No response data for this case number</div>";
+    } else {
+      table = `<table>
+          <caption>${userInputtedCaseNumber}</caption>
+          <thead>
+            <tr>
+              <th>Case &num;</th>
+              <th>Telephone</th>
+              <th>Email</th>
+              <th>Medical Benefits Case</th>
+              <th>Lost Time Case</th>
+              <th>PDF Link</th>
+            </tr>
+          </thead>
+          ${getTableBody(cases)}
+      </table>`;
+    }
     tableResultsDiv.innerHTML += table;
   }
-
-  // take out the bouncing ball
-  loadingAnimationDiv.innerHTML = "";
+  loadingAnimationDiv.innerHTML = ""; // take out the bouncing ball
 });
