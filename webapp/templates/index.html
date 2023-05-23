@@ -15,18 +15,16 @@
         <h1 class="header__h1">JCC Bot</h1>
       </div>
 
-      <div class="form-container">
-        <form class="form">
-          <select name="case-status" class="form__select js-case-status">
-            <option class="form__select-option">Case Status</option>
-            <option class="form__select-option" value="all">All</option>
-            <option class="form__select-option" value="active">Active</option>
-            <option class="form__select-option" value="inactive">Inactive</option>
-          </select>
-          <input type="text" class="js-case-no-1 form__case-input" placeholder="Enter comma-separated case numbers"
-            value="19-00019, 18-00012, 13-00012, 21-00043">
-          <button class="btn js-search-button">Search Result</button>
-        </form>
+      <div class="form">
+        <select name="case-status" class="form__select js-case-status">
+          <option class="form__select-option">Case Status</option>
+          <option class="form__select-option" value="all">All</option>
+          <option class="form__select-option" value="active">Active</option>
+          <option class="form__select-option" value="inactive">Inactive</option>
+        </select>
+        <input type="text" class="js-case-no-1 form__case-input" placeholder="Enter comma-separated case numbers"
+          value="19-00019,18-00012,">
+        <button class="btn js-search-button">Search Result</button>
       </div>
 
       <div class="loading-animation js-loading-animation"></div>
