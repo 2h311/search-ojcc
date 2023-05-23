@@ -36,46 +36,11 @@ function getTableBody(cases) {
   return tbodyElement;
 }
 
-async function getDataFromApi(caseNumbers, caseStatusText) {
-  const response = await fetch("/api", {
-    method: "POST",
-    headers: { Accept: "application/json", "Content-Type": "application/json" },
-    body: JSON.stringify({
-      caseStatus: caseStatusText,
-      caseNumbers: caseNumbers,
-    }),
-  });
-  return await response.json();
-}
-
-searchButton.addEventListener("click", async function () {
-  if (caseStatusElement.selectedOptions[0].text === "CASE STATUS") {
-    console.log("You need to select a case status from the dropdown");
-  }
-
-  const caseNumbers = getCaseNumbers();
-  if (!caseNumbers.length) {
-    console.log("You need to enter one or two case numbers...");
-    return;
-  }
-
-  let caseStatusText = caseStatusElement.selectedOptions[0].text;
-
-  // clear any existing table if any
-  tableResultsDiv.innerHTML = "";
-  // display a bouncing ball
-  loadingAnimationDiv.innerHTML = `<img src="static/ball-animation.svg" alt="Loading Animation" class="loading-animation--ball">`;
-
-  // make request to backend
-  const data = await getDataFromApi(caseNumbers, caseStatusText);
-
+function putApiDataonDOM(data) {
   for (const item of data) {
-    console.log(item);
     const { userInputtedCaseNumber, cases } = item;
-    console.log(cases);
-
     let table;
-    if (cases.length === 0) {
+    if (!cases.length) {
       table = "<div>No response data for this case number</div>";
     } else {
       table = `<table>
@@ -96,4 +61,33 @@ searchButton.addEventListener("click", async function () {
     tableResultsDiv.innerHTML += table;
   }
   loadingAnimationDiv.innerHTML = ""; // take out the bouncing ball
+}
+
+async function getDataFromApi(caseNumbers, caseStatusText) {
+  const response = await fetch("/api", {
+    method: "POST",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify({
+      caseStatus: caseStatusText,
+      caseNumbers: caseNumbers,
+    }),
+  });
+  return await response.json();
+}
+
+searchButton.addEventListener("click", async function () {
+  const caseNumbers = getCaseNumbers();
+  if (!caseNumbers.length) {
+    // TODO: display a red alert asking them to input something
+    return;
+  }
+
+  // // clear any existing table if any
+  // tableResultsDiv.innerHTML = "";
+  // // display a bouncing ball
+  // loadingAnimationDiv.innerHTML = `<img src="static/ball-animation.svg" alt="Loading Animation" class="loading-animation--ball">`;
+
+  // const caseStatusText = caseStatusElement.selectedOptions[0].text;
+  // const data = await getDataFromApi(caseNumbers, caseStatusText); // make request to backend
+  // putApiDataonDOM(data);
 });
