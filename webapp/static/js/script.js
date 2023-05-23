@@ -9,7 +9,9 @@ function getCaseNumbers() {
     "input[class|='js-case-no']"
   ).value;
   caseNumbers.split(",").forEach((string) => {
-    cases.push(string.trim());
+    if (string.length) {
+      cases.push(string.trim());
+    }
   });
   return cases;
 }
@@ -29,11 +31,17 @@ function getTableBody(cases) {
 	  <tr>
 		<td>${caseNumber}</td>
 		<td>${telephone}</td>
-		<td><a href="mailto:${email}">${truncate(email)}</a></td>
+		<td>
+      ${
+        email === "Not Found"
+          ? "<span>Not Found</span>"
+          : `<a href="mailto:${email}">${truncate(email)}</a>`
+      }
+    </td>
 		<td>${medicalBenefitsCase}</td>
 		<td>${lostTimeCase}</td>
 		<td>
-			<a href=${pdfLink}>${truncate(pdfLink)}</a>
+			<a href=${pdfLink}>${truncate(pdfLink, 52)}</a>
 		</td>
 	  </tr>
 	`;
@@ -81,7 +89,7 @@ async function getDataFromApi(caseNumbers, caseStatusText) {
   return await response.json();
 }
 
-function truncate(string, number = 29) {
+function truncate(string, number = 32) {
   let response = string;
   if (string.length > number) {
     response = string.slice(0, number - 1) + "&hellip;";
@@ -91,17 +99,14 @@ function truncate(string, number = 29) {
 
 searchButton.addEventListener("click", async function () {
   const caseNumbers = getCaseNumbers();
-  // console.log(caseNumbers);
   if (!caseNumbers.length) {
     // TODO: display a red alert asking them to input something
     return;
   }
 
-  // clear any existing table if any
-  tableResultsDiv.innerHTML = "";
+  tableResultsDiv.innerHTML = ""; // clear any existing table if any
   // display a bouncing ball
   loadingAnimationDiv.innerHTML = `<img src="static/ball-animation.svg" alt="Loading Animation" class="loading-animation--ball">`;
-
   const caseStatusText = caseStatusElement.selectedOptions[0].text;
   const data = await getDataFromApi(caseNumbers, caseStatusText); // make request to backend
   putApiDataonDOM(data);

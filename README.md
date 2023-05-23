@@ -1,9 +1,6 @@
 # search-ojcc
-This is an Adjuster Data Pull Bot to access https://www.jcc.state.fl.us
 
-## Phase 1
-I don't think I need to work on Phase 1 since I'm exposing the link to the pdf. The user can easily download the pdf file using that link.
-
+This is an Adjuster Data Pull Bot to access https://www.jcc.state.fl.us.
 The fields extracted from Pdfs are:
 OJCC#
 Adjuster Name
@@ -19,4 +16,3 @@ https://docs.google.com/document/d/1_v5tlvzUtrVfi4G31380lLHkl5jXct_n/edit
 
 # TODO: I can extend this to download the PDF file into a cloud storage platform
 # like Google Drive for example
-# TODO: Verify the case status sent from FE
