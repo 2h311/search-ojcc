@@ -29,11 +29,11 @@ function getTableBody(cases) {
 	  <tr>
 		<td>${caseNumber}</td>
 		<td>${telephone}</td>
-		<td><a href="mailto:${email}"></a>${truncate(email)}</td>
+		<td><a href="mailto:${email}">${truncate(email)}</a></td>
 		<td>${medicalBenefitsCase}</td>
 		<td>${lostTimeCase}</td>
 		<td>
-			<a href=${pdfLink}>${pdfLink}</a>
+			<a href=${pdfLink}>${truncate(pdfLink)}</a>
 		</td>
 	  </tr>
 	`;
