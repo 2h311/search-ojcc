@@ -26,6 +26,16 @@ input[type="text"] {
 
 .container {
   max-width: 100%;
-  background-color: chocolate;
+  border: 2px solid black;
   text-align: center;
+}
+
+.header {
+  padding: 4.2rem 0 2rem 0;
+}
+
+.header__h1 {
+  font-size: 3.65rem;
+  font-weight: 800;
+  color: #142d36;
 }
