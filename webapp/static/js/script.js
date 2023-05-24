@@ -74,7 +74,7 @@ function putApiDataonDOM(data) {
     }
     tableResultsDiv.innerHTML += table;
   }
-  loadingAnimationDiv.innerHTML = ""; // take out the bouncing ball
+  // loadingAnimationDiv.innerHTML = ""; // take out the bouncing ball
 }
 
 async function getDataFromApi(caseNumbers, caseStatusText) {
@@ -106,7 +106,7 @@ searchButton.addEventListener("click", async function () {
 
   tableResultsDiv.innerHTML = ""; // clear any existing table if any
   // display a bouncing ball
-  loadingAnimationDiv.innerHTML = `<img src="static/ball-animation.svg" alt="Loading Animation" class="loading-animation--ball">`;
+  // loadingAnimationDiv.innerHTML = `<img src="static/ball-animation.svg" alt="Loading Animation" class="loading-animation--ball">`;
   const caseStatusText = caseStatusElement.selectedOptions[0].text;
   const data = await getDataFromApi(caseNumbers, caseStatusText); // make request to backend
   putApiDataonDOM(data);
