@@ -79,7 +79,7 @@ body {
   padding-left: 5px;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  z-index: 1;
+  position: relative;
 }
 .form__case-input:focus {
   border: 1.85px solid var(--dark-blue);
@@ -100,8 +100,8 @@ body {
 .btn--search {
   border: 1.85px solid var(--light-grey);
   text-align: center;
-  z-index: 2;
-  margin-left: -6rem;
+  position: absolute;
+  right: 68rem;
 }
 .btn--search > i {
   vertical-align: middle;
