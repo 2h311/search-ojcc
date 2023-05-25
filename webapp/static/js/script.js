@@ -2,12 +2,11 @@ const searchButton = document.querySelector(".js-search-button");
 const caseStatusElement = document.querySelector(".js-case-status");
 const tableResultsDiv = document.querySelector(".js-table-results");
 const loadingAnimationDiv = document.querySelector(".js-loading-animation");
+const caseInputElement = document.querySelector(".js-case-no-1");
 
 function getCaseNumbers() {
   const cases = new Array();
-  const caseNumbers = document.querySelector(
-    "input[class|='js-case-no']"
-  ).value;
+  const caseNumbers = caseInputElement.value;
   caseNumbers.split(",").forEach((string) => {
     if (string.length) {
       cases.push(string.trim());
@@ -55,7 +54,7 @@ function putApiDataonDOM(data) {
     const { userInputtedCaseNumber, cases } = item;
     let table;
     if (!cases.length) {
-      table = `<div>No response data for ${userInputtedCaseNumber}</div>`;
+      table = `<div>Can&apos;t Find No Case Data For ${userInputtedCaseNumber}</div>`;
     } else {
       table = `<table>
 		  <caption>${userInputtedCaseNumber}</caption>
@@ -74,11 +73,12 @@ function putApiDataonDOM(data) {
     }
     tableResultsDiv.innerHTML += table;
   }
-  // loadingAnimationDiv.innerHTML = ""; // take out the bouncing ball
+  loadingAnimationDiv.innerHTML = ""; // take out the bouncing ball when we done processing response from the backend
+  caseInputElement.value = ""; // clear the input
 }
 
 async function getDataFromApi(caseNumbers, caseStatusText) {
-  const response = await fetch("/api", {
+  const response = await fetch("/api/", {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -98,22 +98,40 @@ function truncate(string, number = 32) {
 }
 
 searchButton.addEventListener("click", async function () {
-  const caseNumbers = getCaseNumbers();
-  if (!caseNumbers.length) {
-    // TODO: display a red alert asking them to input something
-    return;
-  }
+  // const caseNumbers = getCaseNumbers();
+  // if (!caseNumbers.length) {
+  //   // TODO: display a red alert asking them to input something
+  //   return;
+  // }
 
   tableResultsDiv.innerHTML = ""; // clear any existing table if any
-  // display bouncing ball animation here
+  // display bouncing ball animation
   loadingAnimationDiv.innerHTML = `
     <div class="loadingio-spinner-ball-oha5k74jaw7">
       <div class="ldio-jxs6a0c8pv">
         <div></div>
       </div>
     </div>`;
-  const caseStatusText = caseStatusElement.selectedOptions[0].text;
-  const data = await getDataFromApi(caseNumbers, caseStatusText); // make request to backend
-  loadingAnimationDiv.innerHTML = ""; // remove the bouncing ball
+  // const data = await getDataFromApi(
+  //   caseNumbers,
+  //   caseStatusElement.selectedOptions[0].text
+  // ); // make request to backend
+  const data = [
+    {
+      userInputtedCaseNumber: "21-00012",
+      cases: [
+        {
+          pdfLink:
+            "https://www.jcc.state.fl.us/jccdocs20/WPB/Palm Beach/2021/000012/21000012_7_02192021_14094665_e.pdf",
+          caseNumber: "21-000012CJS",
+          telephone: "800-532-7706",
+          email: "frank.marino@libertymutual.com",
+          medicalBenefitsCase: "Yes",
+          lostTimeCase: "Yes",
+        },
+      ],
+    },
+  ];
+  console.log(data);
   putApiDataonDOM(data);
 });

@@ -85,7 +85,7 @@ body {
 
     border: 1.85px solid transparent;
     margin-left: -2.5px;
-    padding-left: 5px;
+    padding-left: 10px;
     padding-top: 1rem;
     padding-bottom: 1rem;
     position: relative;
@@ -135,4 +135,8 @@ body {
 .btn--search:hover > i {
   color: var(--dark-blue);
   border-color: var(--dark-blue);
+}
+
+.results {
+  margin-top: 6.5rem;
 }
