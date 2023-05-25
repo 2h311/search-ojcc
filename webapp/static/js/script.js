@@ -105,7 +105,15 @@ searchButton.addEventListener("click", async function () {
   }
 
   tableResultsDiv.innerHTML = ""; // clear any existing table if any
+  // display bouncing ball animation here
+  loadingAnimationDiv.innerHTML = `
+    <div class="loadingio-spinner-ball-oha5k74jaw7">
+      <div class="ldio-jxs6a0c8pv">
+        <div></div>
+      </div>
+    </div>`;
   const caseStatusText = caseStatusElement.selectedOptions[0].text;
   const data = await getDataFromApi(caseNumbers, caseStatusText); // make request to backend
+  loadingAnimationDiv.innerHTML = "";
   putApiDataonDOM(data);
 });
