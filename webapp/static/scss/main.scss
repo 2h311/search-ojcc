@@ -40,7 +40,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid #07232c;
   }
 }
 
@@ -60,31 +59,63 @@ body {
 
 .form {
   display: inherit;
-  padding: .2rem;
-  border: 1px solid #07232c;
-  width: 52rem;
-  grid-gap: 5px;
+  justify-content: space-around;
+  align-items: center;
+  padding: .45rem;
+  width: 60rem;
+  box-shadow: 0px 1px 21px -1px rgba(4, 25, 32, 0.15);
 
   &__select {
     font-size: 1.25rem;
     padding: .45rem .65rem .45rem .2rem;
     background-color: var(--white);
     border: 2px solid var(--light-grey);
+    align-self: normal;
+    // justify-self: normal;
+
+    &:focus-visible {
+      outline: none;
+    }
   }
 
   &__case-input {
-    max-width: fit-content;
+    max-width: 80%;
+    width: 78%;
+    outline: none;
+    font-size: 1.45rem;
+
+    border: 1.85px solid transparent;
+    margin-left: -2.5px;
+    padding-left: 5px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    z-index: 1;
+
+    &:focus {
+      border: 1.85px solid var(--dark-blue);
+
+      & + .btn--search {
+        color: var(--dark-blue);
+        border-color: var(--dark-blue);
+
+        & > i {
+          color: var(--dark-blue);
+        }
+      }
+    }
   }
 }
 
 .btn {
   background-color: var(--white);
-  width: 5.2rem;
+  width: 5rem;
+  height: 3.15rem;
 
   &--search {
-    border: 2px solid var(--light-grey);
-    padding: .45rem;
+    border: 1.85px solid var(--light-grey);
     text-align: center;
+    z-index: 2;
+    margin-left: -6rem;
 
     & > i {
       vertical-align: middle;
@@ -103,6 +134,6 @@ body {
 .form__select:hover,
 .btn--search:hover,
 .btn--search:hover > i {
-  border-color: var(--dark-blue);
   color: var(--dark-blue);
+  border-color: var(--dark-blue);
 }

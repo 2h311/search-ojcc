@@ -36,7 +36,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid #07232c;
 }
 
 .header {
@@ -54,29 +53,55 @@ body {
 
 .form {
   display: inherit;
-  padding: 0.2rem;
-  border: 1px solid #07232c;
-  width: 52rem;
-  grid-gap: 5px;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.45rem;
+  width: 60rem;
+  box-shadow: 0px 1px 21px -1px rgba(4, 25, 32, 0.15);
 }
 .form__select {
   font-size: 1.25rem;
   padding: 0.45rem 0.65rem 0.45rem 0.2rem;
   background-color: var(--white);
   border: 2px solid var(--light-grey);
+  align-self: normal;
+}
+.form__select:focus-visible {
+  outline: none;
 }
 .form__case-input {
-  max-width: fit-content;
+  max-width: 80%;
+  width: 78%;
+  outline: none;
+  font-size: 1.45rem;
+  border: 1.85px solid transparent;
+  margin-left: -2.5px;
+  padding-left: 5px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  z-index: 1;
+}
+.form__case-input:focus {
+  border: 1.85px solid var(--dark-blue);
+}
+.form__case-input:focus + .btn--search {
+  color: var(--dark-blue);
+  border-color: var(--dark-blue);
+}
+.form__case-input:focus + .btn--search > i {
+  color: var(--dark-blue);
 }
 
 .btn {
   background-color: var(--white);
-  width: 5.2rem;
+  width: 5rem;
+  height: 3.15rem;
 }
 .btn--search {
-  border: 2px solid var(--light-grey);
-  padding: 0.45rem;
+  border: 1.85px solid var(--light-grey);
   text-align: center;
+  z-index: 2;
+  margin-left: -6rem;
 }
 .btn--search > i {
   vertical-align: middle;
@@ -93,8 +118,8 @@ body {
 .form__select:hover,
 .btn--search:hover,
 .btn--search:hover > i {
-  border-color: var(--dark-blue);
   color: var(--dark-blue);
+  border-color: var(--dark-blue);
 }
 
 /*# sourceMappingURL=styles.css.map */
