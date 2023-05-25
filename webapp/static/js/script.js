@@ -114,6 +114,6 @@ searchButton.addEventListener("click", async function () {
     </div>`;
   const caseStatusText = caseStatusElement.selectedOptions[0].text;
   const data = await getDataFromApi(caseNumbers, caseStatusText); // make request to backend
-  loadingAnimationDiv.innerHTML = "";
+  loadingAnimationDiv.innerHTML = ""; // remove the bouncing ball
   putApiDataonDOM(data);
 });

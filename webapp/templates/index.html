@@ -12,24 +12,26 @@
 
   <body>
     <div class="container">
-      <div class="header">
-        <h1 class="header__h1">Adjuster Case Search</h1>
-      </div>
+      <div class="container__inner">
+        <div class="header">
+          <h1 class="header__h1">Adjuster&nbsp;&nbsp;Case&nbsp;&nbsp;Search</h1>
+        </div>
 
-      <div class="form">
-        <select name="case-status" class="form__select js-case-status">
-          <option class="form__select-option">Case Status</option>
-          <option class="form__select-option" value="all">All</option>
-          <option class="form__select-option" value="active">Active</option>
-          <option class="form__select-option" value="inactive">Inactive</option>
-        </select>
-        <input type="text" class="js-case-no-1 form__case-input" placeholder="Enter comma-separated case numbers"
-          value="19-00019,18-00012,">
-        <button class="btn js-search-button">Search Result</button>
-      </div>
+        <div class="form">
+          <select name="case-status" class="form__select js-case-status">
+            <option class="form__select-option">Case Status</option>
+            <option class="form__select-option" value="all">All</option>
+            <option class="form__select-option" value="active">Active</option>
+            <option class="form__select-option" value="inactive">Inactive</option>
+          </select>
+          <input type="text" class="js-case-no-1 form__case-input" placeholder="Enter comma-separated case numbers"
+            value="">
+          <button class="btn js-search-button">Search Result</button>
+        </div>
 
-      <div class="loading-animation js-loading-animation"></div>
-      <div class="results js-table-results"></div>
+        <div class="loading-animation js-loading-animation"></div>
+        <div class="results js-table-results"></div>
+      </div>
     </div>
     <script src="{{ url_for('static', path='js/script.js') }}"></script>
   </body>

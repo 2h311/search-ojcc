@@ -1,10 +1,12 @@
 @import "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap";
 
+*,
 *::before,
 *::after {
   padding: 0;
   margin: 0;
   box-sizing: inherit;
+  border: 0 solid #e5e7eb;
 }
 
 html {
@@ -25,17 +27,36 @@ input[type="text"] {
 
 .container {
   max-width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #07232c;
+}
+
+.container__inner {
+  width: 65%;
+  display: inherit;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #07232c;
 }
 
 .header {
-  padding: 6.25rem 0 1.32rem 0;
+  margin-top: 10rem;
+  margin-bottom: 1.25rem;
 }
 
 .header__h1 {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  font-size: 5.15rem;
+  letter-spacing: -0.42rem;
+  font-size: 6.05rem;
   font-weight: 600;
-  color: #07232c;
+  color: #041920;
+}
+
+.form {
+  display: inherit;
+  padding: .2rem;
+  border: 1px solid #07232c;
 }
