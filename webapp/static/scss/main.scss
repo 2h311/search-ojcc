@@ -29,39 +29,33 @@ body {
   max-height: 100vh;
 }
 
-.btn,
-.form__select,
-input[type="text"] {
-  font-family: $font-family-poppins;
-}
-
 .container {
   max-width: 100%;
   display: flex;
   justify-content: center;
-}
 
-.container__inner {
-  width: 65%;
-  display: inherit;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #07232c;
+  &__inner {
+    width: 65%;
+    display: inherit;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #07232c;
+  }
 }
 
 .header {
   margin-top: 10rem;
   margin-bottom: 1.25rem;
-}
 
-.header__h1 {
-  margin: 0;
-  font-family: $font-family-poppins;
-  letter-spacing: -0.5rem;
-  font-size: 6.05rem;
-  font-weight: 600;
-  color: var(--dark-blue);
+  &__h1 {
+    margin: 0;
+    font-family: $font-family-poppins;
+    letter-spacing: -0.5rem;
+    font-size: 6.05rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+  }
 }
 
 .form {
@@ -70,28 +64,40 @@ input[type="text"] {
   border: 1px solid #07232c;
   width: 52rem;
   grid-gap: 5px;
+
+  &__select {
+    font-size: 1.25rem;
+    padding: .45rem .65rem .45rem .2rem;
+    background-color: var(--white);
+    border: 2px solid var(--light-grey);
+  }
+
+  &__case-input {
+    max-width: fit-content;
+  }
 }
 
-.form__select {
-  font-size: 1.25rem;
-  padding: .45rem .65rem .45rem .2rem;
-  background-color: var(--white);
-  border: 2px solid var(--light-grey);
-}
-
-.form__case-input {
-  max-width: fit-content;
-}
-
-button.btn {
+.btn {
   background-color: var(--white);
   width: 5.2rem;
+
+  &--search {
+    border: 2px solid var(--light-grey);
+    padding: .45rem;
+    text-align: center;
+
+    & > i {
+      vertical-align: middle;
+      font-size: 1.25rem;
+      color: var(--light-grey);
+    }
+  }
 }
 
-.btn--search {
-  border: 2px solid var(--light-grey);
-  padding: .45rem;
-  text-align: center;
+.btn,
+.form__select,
+.form__case-input {
+  font-family: $font-family-poppins;
 }
 
 .form__select:hover,
@@ -99,13 +105,4 @@ button.btn {
 .btn--search:hover > i {
   border-color: var(--dark-blue);
   color: var(--dark-blue);
-}
-
-/* .btn--search>i:hover {} */
-
-.btn--search > i {
-  vertical-align: middle;
-  font-size: 1.25rem;
-  color: var(--light-grey);
-
 }
