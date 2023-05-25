@@ -35,7 +35,6 @@ input[type=text] {
   max-width: 100%;
   display: flex;
   justify-content: center;
-  /* border: 1px solid #07232c; */
 }
 
 .container__inner {
