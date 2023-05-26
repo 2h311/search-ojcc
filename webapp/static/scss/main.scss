@@ -16,7 +16,6 @@ $font-family-montserrat: "Montserrat", sans-serif;
   padding: 0;
   margin: 0;
   box-sizing: inherit;
-  border: 0 solid #e5e7eb;
 }
 
 html {
@@ -26,7 +25,6 @@ html {
 
 body {
   font-family: $font-family-poppins;
-  max-height: 100vh;
 }
 
 .container {
@@ -35,7 +33,7 @@ body {
   justify-content: center;
 
   &__inner {
-    width: 65%;
+    width: 72%;
     display: inherit;
     flex-direction: column;
     justify-content: center;
@@ -44,7 +42,7 @@ body {
 }
 
 .header {
-  margin-top: 10rem;
+  margin-top: 9rem;
   margin-bottom: 1.25rem;
 
   &__h1 {
@@ -108,6 +106,7 @@ body {
 .btn {
   background-color: var(--white);
   width: 5rem;
+  cursor: pointer;
   height: 3.15rem;
 
   &--search {
@@ -138,5 +137,33 @@ body {
 }
 
 .results {
-  margin-top: 6.5rem;
+  margin-top: 4.25rem;
+  font-size: 1.5rem;
+}
+
+// table //
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  margin-bottom: 2.2rem;
+}
+
+th {
+  text-align: center;
+}
+
+thead,
+tr:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+
+td,
+th {
+  padding: 1.45rem;
+}
+
+caption {
+  font-weight: 600;
+  margin-bottom: .8rem;
 }

@@ -34,13 +34,13 @@ function getTableBody(cases) {
       ${
         email === "Not Found"
           ? "<span>Not Found</span>"
-          : `<a href="mailto:${email}">${truncate(email)}</a>`
+          : `<a href="mailto:${email}">${truncate(email, 20)}</a>`
       }
     </td>
 		<td>${medicalBenefitsCase}</td>
 		<td>${lostTimeCase}</td>
 		<td>
-			<a href=${pdfLink}>${truncate(pdfLink, 52)}</a>
+			<a href=${pdfLink}>${truncate(pdfLink, 30)}</a>
 		</td>
 	  </tr>
 	`;
@@ -63,9 +63,9 @@ function putApiDataonDOM(data) {
 			  <th>Case &num;</th>
 			  <th>Telephone</th>
 			  <th>Email</th>
-			  <th>Medical Benefits Case</th>
-			  <th>Lost Time Case</th>
-			  <th>PDF Link</th>
+			  <th>Medical<br>Benefits</th>
+			  <th>Lost<br>Time</th>
+			  <th>PDF<br>Link</th>
 			</tr>
 		  </thead>
 		  ${getTableBody(cases)}
@@ -98,11 +98,11 @@ function truncate(string, number = 32) {
 }
 
 searchButton.addEventListener("click", async function () {
-  // const caseNumbers = getCaseNumbers();
-  // if (!caseNumbers.length) {
-  //   // TODO: display a red alert asking them to input something
-  //   return;
-  // }
+  const caseNumbers = getCaseNumbers();
+  if (!caseNumbers.length) {
+    // TODO: display a red alert asking them to input something
+    return;
+  }
 
   tableResultsDiv.innerHTML = ""; // clear any existing table if any
   // display bouncing ball animation
@@ -112,26 +112,9 @@ searchButton.addEventListener("click", async function () {
         <div></div>
       </div>
     </div>`;
-  // const data = await getDataFromApi(
-  //   caseNumbers,
-  //   caseStatusElement.selectedOptions[0].text
-  // ); // make request to backend
-  const data = [
-    {
-      userInputtedCaseNumber: "21-00012",
-      cases: [
-        {
-          pdfLink:
-            "https://www.jcc.state.fl.us/jccdocs20/WPB/Palm Beach/2021/000012/21000012_7_02192021_14094665_e.pdf",
-          caseNumber: "21-000012CJS",
-          telephone: "800-532-7706",
-          email: "frank.marino@libertymutual.com",
-          medicalBenefitsCase: "Yes",
-          lostTimeCase: "Yes",
-        },
-      ],
-    },
-  ];
-  console.log(data);
+  const data = await getDataFromApi(
+    caseNumbers,
+    caseStatusElement.selectedOptions[0].text
+  ); // make request to backend
   putApiDataonDOM(data);
 });
