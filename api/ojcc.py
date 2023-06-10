@@ -150,10 +150,10 @@ def get_data_for_multiple_case_numbers(
 if __name__ == "__main__":
     for r in get_data_for_multiple_case_numbers(
         [
-            "18-00012",
-            "13-00012",
-            "13-00013",
-            "21-00043",
+            "18-00016",
+            "13-00017",
+            "13-00018",
+            "21-00023",
         ]
     ):
         pass

@@ -58,7 +58,7 @@ body {
   box-shadow: 0px 1px 21px -1px rgba(4, 25, 32, 0.15);
 }
 .form__select {
-  font-size: 1.25rem;
+  font-size: 1.45rem;
   padding: 0.45rem 0.65rem 0.45rem 0.2rem;
   background-color: var(--white);
   border: 2px solid var(--light-grey);
@@ -71,7 +71,7 @@ body {
   max-width: 80%;
   width: 78%;
   outline: none;
-  font-size: 1.45rem;
+  font-size: 1.65rem;
   border: 1.85px solid transparent;
   margin-left: -2.5px;
   padding-left: 10px;
@@ -104,7 +104,7 @@ body {
 }
 .btn--search > i {
   vertical-align: middle;
-  font-size: 1.25rem;
+  font-size: 1.45rem;
   color: var(--light-grey);
 }
 
@@ -150,6 +150,56 @@ th {
 caption {
   font-weight: 600;
   margin-bottom: 0.8rem;
+}
+
+@media only screen and (max-width: 160em) {
+  .btn--search {
+    right: 100rem;
+  }
+}
+@media only screen and (max-width: 142em) {
+  .btn--search {
+    right: 85rem;
+  }
+}
+@media only screen and (max-width: 120em) {
+  .btn--search {
+    right: 67.5rem;
+  }
+}
+@media only screen and (max-width: 100em) {
+  .btn--search {
+    right: 0rem;
+    left: 103rem;
+  }
+}
+@media only screen and (max-width: 96em) {
+  .btn--search {
+    right: 0rem;
+    left: 100rem;
+  }
+}
+@media only screen and (max-width: 96em) {
+  .btn--search {
+    right: 0rem;
+    left: 96rem;
+  }
+}
+@media only screen and (max-width: 80em) {
+  .btn--search {
+    right: 0rem;
+    left: 87rem;
+  }
+}
+@media only screen and (max-width: 85.38em) {
+  .btn--search {
+    right: 40rem;
+  }
+}
+@media only screen and (max-width: 64em) {
+  .btn--search {
+    right: 22.5rem;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */
