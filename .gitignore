@@ -2,3 +2,5 @@ setup.cfg
 __pycache__/
 .pre-commit-config.yaml
 *.css.map
+
+.space

@@ -3,6 +3,7 @@ import io
 import logging
 import re
 from typing import Callable
+from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup
@@ -113,7 +114,7 @@ def get_pdf_content(pdf_link: str) -> bytes:
     return response.content
 
 
-def get_all_data_from_case_no(ojcc_case_no: str) -> list[OjccCaseData | None]:
+def get_all_data_from_case_no(ojcc_case_no: str) -> list[Optional[OjccCaseData]]:
     all_data_list = list()
     div_docket = get_jcc_html(ojcc_case_no)
 
@@ -138,7 +139,7 @@ def get_all_data_from_case_no(ojcc_case_no: str) -> list[OjccCaseData | None]:
 
 def get_data_for_multiple_case_numbers(
     case_number_list: list,
-) -> DataToBeReturned | None:
+) -> Optional[DataToBeReturned]:
     for string in case_number_list:
         pipeline = dict()
         returned_data = get_all_data_from_case_no(string)
@@ -151,8 +152,8 @@ if __name__ == "__main__":
     for r in get_data_for_multiple_case_numbers(
         [
             "18-00016",
-            "13-00017",
-            "13-00018",
+            "13-00012",
+            "19-00019",
             "21-00023",
         ]
     ):

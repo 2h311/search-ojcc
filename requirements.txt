@@ -1,0 +1,8 @@
+aiofiles
+aiohttp
+fastapi
+Jinja2
+pydantic
+requests
+bs4
+pdfminer.six

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -12,7 +14,7 @@ class OjccCaseData(BaseModel):
 
 class DataToBeReturned(BaseModel):
     userInputtedCaseNumber: str
-    cases: list[OjccCaseData | None]
+    cases: list[Optional[OjccCaseData]]
 
 
 class CasePayload(BaseModel):
