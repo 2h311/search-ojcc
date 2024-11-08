@@ -1,6 +1,6 @@
 aiofiles
 aiohttp
-fastapi
+fastapi[standard]
 Jinja2
 pydantic
 requests
