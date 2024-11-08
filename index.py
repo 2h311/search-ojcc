@@ -13,3 +13,6 @@ app = FastAPI(
 app.include_router(webapp_router)
 app.include_router(api_router)
 app.mount("/static", StaticFiles(directory=Path("webapp", "static")), name="static")
+
+
+
