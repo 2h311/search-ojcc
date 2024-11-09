@@ -40,7 +40,7 @@ function getTableBody(cases) {
 		<td>${medicalBenefitsCase}</td>
 		<td>${lostTimeCase}</td>
 		<td>
-			<a href=${pdfLink}>${truncate(pdfLink, 30)}</a>
+			<a href=${pdfLink} target='_blank'>${truncate(pdfLink, 30)}</a>
 		</td>
 	  </tr>
 	`;
