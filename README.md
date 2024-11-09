@@ -1,5 +1,4 @@
-# Adjuster Case Search 
-Check it out @[Website](https://search-ojcc.vercel.app/)
+# [Adjuster Case Search](https://search-ojcc.vercel.app/)
 
 ## Introduction
 This web application streamlines the process of finding case-related information from the Florida Office of Judges of Compensation Claims website. By allowing users to input one or multiple case numbers, the tool automatically searches the website, retrieves the relevant PDFs associated with each case, and extracts key details, including the OJCC number, Adjuster Name, Contact Information, and details on Lost Time and Medical Benefits Cases. This solution is designed to save time, reduce manual data entry, and provide users with quick access to essential case information.
